@@ -21,7 +21,7 @@ To simulate intelligent decision-making using MCTS in the game of Tic-Tac-Toe an
 
 ---
 
-## 🧠 AI Implementation: Monte Carlo Tree Search (MCTS)
+## 🧠 Implementation: Monte Carlo Tree Search (MCTS)
 
 The MCTS algorithm is implemented with the following phases:
 
