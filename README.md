@@ -67,7 +67,9 @@ Heuristic-based move selection is used in simulations to improve performance:
 CSV output is generated to evaluate MCTS performance over different iteration counts.
 
 ---
+### How to run
 
+- Navigate to TicTacToeStats.java and run that file to get benchmark results
 
 
 
