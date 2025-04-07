@@ -92,15 +92,22 @@ public class MCTS {
         while (node != null) {
             node.setPlayouts(node.playouts() + 1);
 
-            int movePlayer = (node.getParent() == null) ? -1 : node.getParent().state().player();
+            Node<TicTacToe> parent = node.getParent();
+            int movePlayer;
 
-            if (result == -1) {
-                node.setWins(node.wins() + 1);
-            } else if (movePlayer == result) {
-                node.setWins(node.wins() + 2);
+            if (parent == null) {
+               movePlayer = (node.state().player() == TicTacToe.X) ? TicTacToe.O : TicTacToe.X;
+            } else {
+                movePlayer = parent.state().player();
             }
 
-            node = node.getParent();
+            if (result == -1) {
+                node.setWins(node.wins() + 1); // draw = 1 point
+            } else if (movePlayer == result) {
+                node.setWins(node.wins() + 2); // win = 2 points
+            }
+
+            node = parent;
         }
     }
     public TicTacToeNode getBestMove() {
