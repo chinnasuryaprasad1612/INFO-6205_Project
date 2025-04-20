@@ -82,7 +82,7 @@ public class Position {
             for (int j = 0; j < gridSize; j++)
                 if (grid[i][j] < 0)
                     result.add(new int[]{i, j});
-         ;
+        ;
         // END SOLUTION
         return result;
     }
