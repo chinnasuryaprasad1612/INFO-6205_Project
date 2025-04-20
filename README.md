@@ -30,24 +30,8 @@ To simulate intelligent decision-making using MCTS in the game of Tic-Tac-Toe an
 
 📌 *Note:* In our implementation, Player 1 always starts and the score updates dynamically after each move.
 
-## 🧠 Implementation: Monte Carlo Tree Search (MCTS)
+[View the complete project documentation here](https://docs.google.com/document/d/1t6qhPidmGvUK8FZV1OEQQHFpwPfSJLltatpFFLa279A/edit?usp=sharing)
 
-The MCTS algorithm is implemented with the following phases:
-
-### 1. **Selection**
-- Traverse the tree from the root node using the **UCT (Upper Confidence Bound applied to Trees)** formula to select the best child until a leaf node is reached.
-
-### 2. **Expansion**
-- If the selected node is not terminal and not fully expanded, generate all legal moves as child nodes.
-
-### 3. **Simulation**
-- From the expanded node, simulate a complete game using random or heuristic-based decisions until a terminal state is reached.
-
-### 4. **Backpropagation**
-- The result of the simulation is propagated back through the visited nodes, updating their statistics:
-    - Win = +2
-    - Draw = +1
-    - Loss = +0
 
 ---
 
