@@ -101,8 +101,12 @@ CSV output is generated to evaluate MCTS performance over different iteration co
   - Choose your **difficulty level** to adjust AI intelligence (EASY, MEDIUM, HARD, EXPERT).
 
 ---
+### How to run
 
 ### ▶ Dots and Boxes
+=======
+- Navigate to TicTacToeStats.java and run that file to get benchmark results
+
 
 - **Benchmarking**
   - Run the benchmarking experiments by executing:
