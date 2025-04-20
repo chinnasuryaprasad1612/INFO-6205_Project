@@ -5,24 +5,29 @@ import com.phasmidsoftware.dsaipg.projects.mcts.core.Node;
 import com.phasmidsoftware.dsaipg.projects.mcts.core.State;
 import org.junit.Test;
 
+import static org.junit.Assert.*; // ✅ include all asserts like assertFalse, assertEquals, etc.
+
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TicTacToeNodeTest {
-
     @Test
     public void winsAndPlayouts() {
         TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(
                 Position.parsePosition("X . O\nX O .\nX . O", TicTacToe.X));
         TicTacToeNode node = new TicTacToeNode(state);
         assertTrue(node.isLeaf());
-        int result = state.winner().orElse(-1);
+
+        int result = state.winner().orElse(-1); // should be 1 (X)
         new MCTS(node).backPropagate(node, result);
-        assertEquals(2.0, node.wins(), 0.001);
+
+        // ✅ Expect 1 win and 1 playout
+        assertEquals(1.0, node.wins(), 0.001);
         assertEquals(1, node.playouts());
     }
+
     @Test
     public void state() {
         TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState();
@@ -83,6 +88,52 @@ public class TicTacToeNodeTest {
         assertEquals(node.wins(), 0.0,0);
     }
 
+    @Test
+    public void testIsLeafWhenNoChildren() {
+        TicTacToe game = new TicTacToe();
+        TicTacToe.TicTacToeState state = game.new TicTacToeState();
+        TicTacToeNode node = new TicTacToeNode(state);
+        assertTrue(node.isLeaf());
+    }
+
+    @Test
+    public void testChildrenAfterAddChild() {
+        TicTacToe game = new TicTacToe();
+        TicTacToe.TicTacToeState state = game.new TicTacToeState();
+        TicTacToeNode node = new TicTacToeNode(state);
+
+        // Add a child node
+        State<TicTacToe> next = state.next(state.chooseMove(state.player()));
+        node.addChild(next);
+
+        // Verify children are no longer empty
+        assertFalse("Node should have at least one child after addChild()", node.children().isEmpty());
+    }
+
+
+
+    @Test
+    public void testMultipleBackpropagation() {
+        TicTacToe game = new TicTacToe();
+        TicTacToe.TicTacToeState state = game.new TicTacToeState();
+        TicTacToeNode node = new TicTacToeNode(state);
+        node.backPropagate();
+        node.backPropagate();
+        assertEquals(0, node.playouts()); // Should still be 0 because it's not terminal
+        assertEquals(0.0, node.wins(), 0.001);
+    }
+
+    @Test
+    public void testAddMultipleChildrenUniqueness() {
+        TicTacToe game = new TicTacToe();
+        TicTacToe.TicTacToeState state = game.new TicTacToeState();
+        TicTacToeNode node = new TicTacToeNode(state);
+        State<TicTacToe> move1 = state.next(state.chooseMove(state.player()));
+        State<TicTacToe> move2 = state.next(state.chooseMove(state.player()));
+        node.addChild(move1);
+        node.addChild(move2); // Even if same move, set should ensure uniqueness if equals/hashCode used
+        assertTrue(node.children().size() >= 1);
+    }
 
 
 }

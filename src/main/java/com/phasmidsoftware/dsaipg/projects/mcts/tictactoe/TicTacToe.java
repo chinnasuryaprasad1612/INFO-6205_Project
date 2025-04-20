@@ -19,15 +19,21 @@ public class TicTacToe implements Game<TicTacToe> {
      *
      * @param args command-line arguments.
      */
-    public static void main(String[] args) {
-        // NOTE the behavior of the game to be run will be based on the TicTacToe instance field: random.
+    public static String simulateGameOutput() {
         TicTacToe game = new TicTacToe();
-        State<TicTacToe> state = game.runGame(1000); // 👈 Pass number of iterations here
-        System.out.println(state);
+        //can change the number of iterations to get the optimal play...
+        State<TicTacToe> state = game.runGame(1000);
+        StringBuilder sb = new StringBuilder();
+        sb.append(state.toString()).append("\n");
         if (state.winner().isPresent())
-            System.out.println("TicTacToe: winner is: " + state.winner().get());
+            sb.append("TicTacToe: winner is: ").append(state.winner().get());
         else
-            System.out.println("TicTacToe: draw");
+            sb.append("TicTacToe: draw");
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(simulateGameOutput());
     }
 
     public static final int X = 1;
@@ -64,7 +70,7 @@ public class TicTacToe implements Game<TicTacToe> {
         while (!state.isTerminal()) {
             TicTacToeNode root = new TicTacToeNode(state);
             MCTS mcts = new MCTS(root);
-            mcts.run(iterationsPerMove);// 👈 This is where you pass the number of iterations
+            mcts.run(iterationsPerMove);
             state = mcts.getBestMove().state();
             player = 1 - player;
         }
@@ -114,6 +120,7 @@ public class TicTacToe implements Game<TicTacToe> {
     public TicTacToe() {
         this(System.currentTimeMillis());
     }
+
 
     private final Random random;
 
@@ -258,5 +265,9 @@ public class TicTacToe implements Game<TicTacToe> {
         }
 
         private final Position position;
+        public TicTacToeState(int startingPlayer) {
+            this.position = Position.parsePosition(". . .\n. . .\n. . .", startingPlayer == O ? X : O);
+        }
     }
+
 }
